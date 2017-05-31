@@ -1,0 +1,23 @@
+{
+  "name": "google-maps-neighborhood",
+  "homepage": "https://github.com/Agapito78/google-maps-neighborhood",
+  "authors": [
+    "Agapito <agapito.andre@gmail.com>"
+  ],
+  "description": "Allow users to check several information of a neighborhood",
+  "main": "index.html",
+  "keywords": [
+    "google",
+    "places",
+    "neighborhood",
+    "API"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

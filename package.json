@@ -1,0 +1,35 @@
+{
+  "name": "google-maps-neighborhood",
+  "version": "1.0.0",
+  "description": "Allow users to retrieve several information of a specific neighborhood",
+  "main": "js/main.js",
+  "dependencies": {
+    "gulp-clean-css": "^3.4.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^3.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Agapito78/google-maps-neighborhood.git"
+  },
+  "keywords": [
+    "maps",
+    "js",
+    "javascript",
+    "udacity",
+    "neighborhood"
+  ],
+  "author": "Andre C Agapito",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Agapito78/google-maps-neighborhood/issues"
+  },
+  "homepage": "https://github.com/Agapito78/google-maps-neighborhood#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  }
+}

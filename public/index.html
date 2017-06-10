@@ -2,10 +2,91 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <script type="text/javascript" src="js/jquery.min.js" defer></script>
+    <script type="text/javascript" src="js/knockout.js" defer></script>
+    <script type="text/javascript" src="js/namespace.js" defer></script>
+    <script type="text/javascript" src="js/data.js" defer></script>
+    <script type="text/javascript" src="js/controller.js" defer></script>
+    <script type="text/javascript" src="js/bootstrap.min.js" defer></script>
+    <script type="text/javascript" src="js/main.js" defer></script>
     <title>Title</title>
 </head>
 <body>
-<div id="map"></div>
+<!-- Preloader-->
+<section class="loader preloader-bg">
+    <div class="loader-inner ">
+        <div id="spinner" class="active">
+            <span id="ball_1" class="spinner_ball"></span>
+            <span id="ball_2" class="spinner_ball"></span>
+            <span id="ball_3" class="spinner_ball"></span>
+        </div>
+    </div>
+</section>
+<section class="wrapper">
+    <div id="map"></div>
+    <div class="searchBar">
+        <div class="input-group inline">
+            <label class="input-group-addon" id="basic-addon3">Add Marker: </label>
+            <input type="text" id="txtSearch" name="txtSearch" data-bind="value: APP.Main.txtSearch" placeholder="" class="form-control" aria-describedby="basic-addon3"/>
+        </div>
+        <div class="search-button">
+            <button id="btnSearch" title="Search" class="btn-default glyphicon glyphicon-search"></button>
+        </div>
+    </div>
+    <div class="navPanel">
+        <div id="options">
+            <div class="currentlocation-button">
+                <button id="btnCurrentLoc" title="Current Location" class="btn-default glyphicon glyphicon-screenshot" onclick="APP.Controller.getLocation()"></button>
+            </div>
+            <div id="range" data-bind="foreach: APP.Main.ranges">
+                <div class="rangeItem" >
+                    <input type="radio" name="rangeChk"
+                           data-bind="value: value, attr: {id: 'rangeChk'}, checked: APP.Main.checkedRange ">
+                    <label data-bind="text: name"></label>
+                </div>
+            </div>
+            <div id="placeType" data-bind="foreach: APP.Main.placesTypes">
+                <div class="placeTypeItem" >
+                    <input type="radio" name="placeTypeChk"
+                           data-bind="value: value, attr: {id: 'placeTypeChk'}, checked: APP.Main.checkedPlaceType ">
+                    <label data-bind="text: name"></label>
+                </div>
+            </div>
+        </div>
+        <div style="overflow: auto">
+            <ul id="locations" class="list-group" data-bind="foreach: APP.Main.places">
+                <li class="list-group-item"  data-bind="click: navigateNearbyPlaces, text: name,event: { mouseover: displayOnMap, mouseout: hideDetails }"></li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8IQIuWNOPXPTPOSXdsMaPzDqeHvUG5Fo&libraries=places&callback=APP.Main.initMap">
+</script>
+
+<div id="myModal" class="modal fade">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Modal body text goes here.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

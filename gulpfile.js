@@ -11,13 +11,29 @@ var config = {
 }
 
 gulp.task('bootstrap-fonts', function() {
-    return gulp.src(config.bowerDir + "/bootstrap/dist/fonts")
+    return gulp.src(config.bowerDir + "/bootstrap/dist/fonts/*")
         .pipe(gulp.dest("public/fonts"));
 });
 
 gulp.task('bootstrap-css', function() {
     return gulp.src(config.bowerDir + "/bootstrap/dist/css/*")
         .pipe(gulp.dest("public/css"));
+});
+
+gulp.task('bootstrap-js', function() {
+    return gulp.src(config.bowerDir + "/bootstrap/dist/js/*")
+        .pipe(gulp.dest("public/js"));
+});
+
+
+gulp.task('jquery', function() {
+    return gulp.src(config.bowerDir + "/jquery/dist/jquery.min.js")
+        .pipe(gulp.dest("public/js"));
+});
+
+gulp.task('knockout', function() {
+    return gulp.src(config.bowerDir + "/knockout/dist/knockout.js")
+        .pipe(gulp.dest("public/js"));
 });
 
 gulp.task('animate-css', function() {
@@ -53,7 +69,11 @@ gulp.task('js-minify', function() {
 var gulpTasksDev = [
     "bootstrap-fonts",
     "bootstrap-css",
-    "animate-css"
+    "bootstrap-js",
+    "bootstrap-fonts",
+    "animate-css",
+    "jquery",
+    "knockout"
 ];
 
 gulp.task('dev', gulpTasksDev);

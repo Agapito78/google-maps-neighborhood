@@ -1,0 +1,291 @@
+/* preloader style start */
+
+.loader {
+    position: fixed;
+    z-index: 1200;
+    display: table;
+    height: 100%;
+    width: 100%;
+}
+.bg-white {
+    background-color: #fff;
+}
+/* extra style */
+
+.relative {
+    position: relative;
+}
+.text-center {
+    text-align: center;
+}
+.text-left {
+    text-align: left;
+}
+.text-right {
+    text-align: right;
+}
+.block-center {
+    margin: auto;
+    float: none;
+}
+.gray_bg {
+    background: #f8f8f8;
+}
+.dark_bg {
+    background: #222;
+}
+.white_bg {
+    background: #fff;
+}
+.no-padding {
+    padding: 0;
+}
+.no-margin {
+    margin: 0;
+}
+.z-index {
+    z-index: 9;
+    position: relative;
+}
+.overflow-hidden {
+    overflow: hidden;
+}
+.center-block {
+    float: none !important;
+    display: block;
+    margin: 0 auto 30px;
+}
+.padding-50 {
+    padding: 50px 0;
+}
+.flex {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.flex-colums {
+    display: -ms-flex;
+    display: -webkit-flex;
+    display: flex;
+}
+.preloader-bg {
+    background-color: rgba(255, 255, 255, 0.98);
+}
+.loader-inner {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}
+#spinner.active {
+    display: block;
+}
+#spinner {
+    display: none;
+    position: absolute;
+    height: 60px;
+    width: 60px;
+    margin: auto;
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
+.spinner_ball {
+    position: absolute;
+    display: block;
+    left: 24px;
+    width: 12px;
+    height: 12px;
+    border-radius: 6px;
+}
+#ball_1 {
+    -webkit-animation-timing-function: cubic-bezier(0.5, 0.3, 0.9, 0.9);
+    -webkit-animation-name: rotate;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-transform-origin: 6px 30px;
+    background-color: #eb8300;
+}
+#ball_2 {
+    -webkit-animation-timing-function: cubic-bezier(0.5, 0.5, 0.9, 0.9);
+    -webkit-animation-name: rotate;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-transform-origin: 6px 30px;
+    background-color: rgba(0, 0, 0, 0.44);
+}
+#ball_3 {
+    -webkit-animation-timing-function: cubic-bezier(0.5, 0.7, 0.9, 0.9);
+    -webkit-animation-name: rotate;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-transform-origin: 6px 30px;
+    background-color: #626262;
+}
+@-webkit-keyframes rotate {
+    0% {
+        -webkit-transform: rotate(0deg) scale(1);
+    }
+    100% {
+        -webkit-transform: rotate(1440deg) scale(1);
+    }
+}
+/* preloader style finish */
+/* Style from 1025px and bigger display */
+
+html, body, .wrapper { height: 100%; margin: 0; padding: 0; }
+
+button {
+    padding:6px;
+    border:1px;
+    background-color: #636363;
+    vertical-align: middle;
+
+}
+
+input {
+    vertical-align: middle;
+
+}
+
+.align-center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.inline {
+    display: inline-block;
+}
+
+.wrapper {
+
+}
+
+/*
+Main Google Maps Block
+ */
+#map {
+    height: 100%;
+    z-index: 10;
+}
+
+#locations {
+    position:relative;
+    padding:10px;
+    text-align: left;
+    position: relative;
+    margin-bottom: 0px;
+}
+
+#locations .list-group {
+    margin-bottom: 0px;
+}
+
+#locations .list-group-item {
+    padding: 2px 5px;
+}
+
+#placeType {
+    display:block;
+    clear:both;
+}
+
+#range {
+    display:inline-block;
+}
+
+.rangeItem {
+    background-color: #c9cedb;
+    display:inline-block;
+    clear:both;
+    padding:3px;
+    border-radius: 3px;
+    margin:2px;
+}
+
+.placeTypeItem {
+    background-color: #dcdcdc;
+    display:inline-block;
+    clear:both;
+    padding:3px;
+    border-radius: 3px;
+    margin:2px;
+}
+
+.placeTypeItem label {
+    padding-top: 4px;
+}
+
+.searchBar {
+    display: flex;
+    min-width: 300px;
+    max-width: 35%;
+    padding:10px;
+    border-radius: 3px;
+    background-color: #2e6da4;
+    position: absolute; top: 10px; left: 10px; z-index: 99;
+    opacity: 0.2;
+    vertical-align: middle;
+    text-align: center
+}
+
+.searchBar .input-group {
+    width: 80%;
+    z-index: 9999999999;
+}
+
+.currentlocation-button {
+    margin: 6px;
+    margin-left: 5px;
+    display:inline-block;
+    clear:both;
+}
+
+.search-button {
+    padding:3px 0px 3px 0px;
+    margin-left: 5px;
+    border-radius:3px;
+}
+
+.navPanel {
+    display: none;
+    overflow: auto;
+    min-width: 300px;
+    max-width: 35%;
+    height:65%;
+    padding:10px;
+    border-radius: 3px;
+    background-color: #acacac;
+    position: absolute; top: 65px; left: 10px;
+    opacity: 0;
+    vertical-align: middle;
+    text-align: center
+}
+/* Reduce font-size to avoid scrolling*/
+@media only screen and (max-width: 1049px) {
+    label {
+        font-size: 10px;
+    }
+    .list-group-item {
+        font-size: 10px;
+    }
+}
+
+/* Reduce font-size to avoid scrolling*/
+@media only screen and (min-width: 1050px) and (max-width: 1300px) {
+    label {
+        font-size: 11px;
+    }
+    .list-group-item {
+        font-size: 12px;
+    }
+}
+
+/* Reduce font-size to avoid scrolling*/
+@media only screen and (min-width: 1301px)  {
+    label {
+        font-size: 12px;
+    }
+    .list-group-item {
+        font-size: 13px;
+    }
+}

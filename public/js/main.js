@@ -20,7 +20,6 @@ APP.MapLocation.prototype.clearNearbyPlaces = true;
 
 //display/highlight location in the map (on mouse over in list-view items)
 APP.MapLocation.prototype.displayOnMap =  function() {
-    console.log(this);
     //change current icon color to default
     APP.Controller.setDefaultIcon();
 

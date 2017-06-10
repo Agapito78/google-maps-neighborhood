@@ -233,7 +233,7 @@ APP.Controller = (function() {
         },8000);
 
         $.ajax({
-            url: 'http://en.wikipedia.org/w/api.php',
+            url: 'https://en.wikipedia.org/w/api.php',
             data: { action: 'query', list: 'search', srsearch: place.name, format: 'json' },
             dataType: 'jsonp',
             success: processResult,

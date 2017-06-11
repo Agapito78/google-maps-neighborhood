@@ -239,7 +239,7 @@ APP.Controller = (function() {
 
         function processResult(apiResult){
             var strWiki = "";
-            var limitArticles = (apiResult.query.search.length>2)?2:apiResult.query.search.length;
+            var limitArticles = (apiResult.query.search.length>1)?1:apiResult.query.search.length;
             for (var i = 0; i < limitArticles; i++){
                 //console.log(apiResult.query.search[i]);
                 var urlWiki = "https://en.wikipedia.org/wiki/" + apiResult.query.search[i].title;

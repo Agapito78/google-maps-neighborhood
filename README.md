@@ -37,15 +37,16 @@ After Gulp installation. There are three dependencies that must be installed to 
     
 #### Part 2: How to use the map
 
-Functionalities of the Search Bar
+Functionalities of the Search Bar:
 
 1. Default locations are already included in the list-view.
-2. There are two options to filter points of interest around the market:
+2. When locations in the list-view is clicked, map will be zoommed and points of interest will be displayed around the marker
+2. There are two options to filter points of interest around the markers:
     * By radius: 500m, 1000m or 1500m
     * Choose the type of information: ATM, Stores, Bars, etc.
 3. Add new markers using search bar
     * Before clicking Search button, user should select desired radio and point of interest
-    
+4. To close "Search bar" just click anywhere in the map   
 &nbsp;
 
 

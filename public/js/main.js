@@ -4,7 +4,7 @@
 
 /*
 ////////////////////////////////////////////////////
-MapLocation Class to store main locations in the list-view
+MapLocation Class to store main map locations in the list-view
  */
 APP.MapLocation = function (args){
     this.name =  args.name;
@@ -78,10 +78,6 @@ APP.Main = {
     placesTypes: ko.observableArray([]) , //array of location types (bars, restaurants, etc) used to viw nearby places related to main location
     checkedPlaceType: ko.observable("store"),
     nearbyPlaces: ko.observableArray([]) , //array of places nearby main location associated with place types radio list
-    //
-    addCurrentPosition: function() {
-
-    },
     //function to remove nearby places from the map
     clearNearbyPlaces: function() {
         ko.utils.arrayForEach(APP.Main.nearbyPlaces(), function (nearPlace) {
@@ -92,11 +88,11 @@ APP.Main = {
     fadeSearchBar: function (opacity){
         $(".searchBar").fadeTo( "fast", opacity );
     },
-//Function to adjust opacity of searchBar element
+    //Function to adjust opacity of searchBar element
     hideNavPanel: function(){
         $(".navPanel").hide();
     },
-//Function to initialize Google Maps
+    //Function to initialize Google Maps
     initMap: function() {
         console.log("Initialize Map");
         APP.Main.infowindow = new google.maps.InfoWindow();

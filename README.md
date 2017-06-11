@@ -15,9 +15,14 @@ Please, check below information to run this project. There is an online version 
 
 #### Part 1: How to run this project
 
-This project is using Gulp to adjust CSS and JS files. Check for instructions to install Gulp [here](http://gulpjs.com/).
+This project is using Bower and Gulp to adjust CSS and JS files. Check for instructions to install [Bower](https://bower.io/) and [Gulp](http://gulpjs.com/).
 
-After Gulp installation. There are three dependencies that must be installed to run Gulp tasks on this project: gulp-concat, gulp-clean-css and gulp-uglify. Please, check below:
+* Install bower and execute command below to download dependencies
+    ```bash
+    bower update
+    ```
+    
+* Install Gulp. For information the link mentioned above in the Overview section.
 
 * Installing required Gulp dependencies using NPM.
 

@@ -90,6 +90,86 @@ APP.Main = {
             nearPlace().setMap(null);
         });
     },
+    //Function to adjust opacity of searchBar element
+    fadeSearchBar: function (opacity){
+    $(".searchBar").fadeTo( "fast", opacity );
+},
+//Function to adjust opacity of searchBar element
+hideNavPanel: function(){
+    $(".navPanel").hide();
+},
+//Function to initialize Google Maps
+initMap: function() {
+    console.log("Initialize Map");
+    APP.Main.infowindow = new google.maps.InfoWindow();
+    APP.Main.map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 12,
+        center: APP.Main.defaultPosition(),
+        mapTypeControl: true,
+        mapTypeControlOptions: {
+            style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+            position: google.maps.ControlPosition.BOTTOM_LEFT
+        }
+    });
+
+    //Close current infoWindow when map is clicked.
+    google.maps.event.addListener(APP.Main.map, 'click', function() {
+        APP.Main.infowindow.close();
+        //Set current market to default color
+        APP.Controller.setDefaultIcon();
+    });
+
+    //Function to fade in opacity of navPanel element
+    function fadeInNavPanel(){
+        APP.Main.fadeNavPanel(0.85);
+        APP.Main.fadeSearchBar(0.85);
+    }
+
+    //Function to fade in opacity of navPanel element
+    function fadeOutNavPanel(){
+        APP.Main.fadeNavPanel(0);
+        APP.Main.fadeSearchBar(0.2);
+    }
+
+    //Change opacity of navigation panel when map is clicked
+    $("#map").mousedown(function(){
+        fadeOutNavPanel();
+    });
+
+    //Change opacity of navigation panel when mouse is over or click event
+    $(".searchBar").mouseover(function(){
+        APP.Main.map.setZoom(12);
+        APP.Main.clearNearbyPlaces();
+        //APP.Controller.setDefaultIcon();
+        fadeInNavPanel();
+        APP.Main.infowindow.close();
+    });
+
+    //Change opacity of navigation panel when mouse is over or click event
+    $(".searchBar").click(function(){
+        fadeInNavPanel();
+    });
+
+    //equalize widrh of search bar and list-view panel
+    $( window ).resize(function() {
+        equalizeWidth();
+        //$("#navPanel").height($(window).height());
+    })
+
+    //Click event handler for Search button
+    $("#btnSearch").click(function() {
+        if (APP.Main.txtSearch()!=="") {
+            var text = APP.Main.txtSearch().toString();
+            var searchLoc = ko.observable(new APP.MapLocation({name: text, info: null}));
+            APP.Main.loadLocation(searchLoc);
+            APP.Main.searchBtnClicked = true;
+        }
+    });
+
+    //Call this function to request location access to the user
+    navigator.geolocation.getCurrentPosition(function(){},function(){});
+},
+
     viewModel: function(strAddress) {
         APP.Main.searchBtnClicked = false;
         APP.Main.txtSearch(strAddress);
@@ -142,85 +222,6 @@ APP.Main = {
                 $(this).css("z-index","0");
             });
         }
-    },
-    //Function to adjust opacity of searchBar element
-    fadeSearchBar: function (opacity){
-        $(".searchBar").fadeTo( "fast", opacity );
-    },
-    //Function to adjust opacity of searchBar element
-    hideNavPanel: function(){
-        $(".navPanel").hide();
-    },
-    //Function to initialize Google Maps
-    initMap: function() {
-        console.log("Initialize Map");
-        APP.Main.infowindow = new google.maps.InfoWindow();
-        APP.Main.map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 12,
-            center: APP.Main.defaultPosition(),
-            mapTypeControl: true,
-            mapTypeControlOptions: {
-                style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
-                position: google.maps.ControlPosition.BOTTOM_LEFT
-            }
-        });
-
-        //Close current infoWindow when map is clicked.
-        google.maps.event.addListener(APP.Main.map, 'click', function() {
-            APP.Main.infowindow.close();
-            //Set current market to default color
-            APP.Controller.setDefaultIcon();
-        });
-
-        //Function to fade in opacity of navPanel element
-        function fadeInNavPanel(){
-            APP.Main.fadeNavPanel(0.85);
-            APP.Main.fadeSearchBar(0.85);
-        }
-
-        //Function to fade in opacity of navPanel element
-        function fadeOutNavPanel(){
-            APP.Main.fadeNavPanel(0);
-            APP.Main.fadeSearchBar(0.2);
-        }
-
-        //Change opacity of navigation panel when map is clicked
-        $("#map").mousedown(function(){
-            fadeOutNavPanel();
-        });
-
-        //Change opacity of navigation panel when mouse is over or click event
-        $(".searchBar").mouseover(function(){
-            APP.Main.map.setZoom(12);
-            APP.Main.clearNearbyPlaces();
-            //APP.Controller.setDefaultIcon();
-            fadeInNavPanel();
-            APP.Main.infowindow.close();
-        });
-
-        //Change opacity of navigation panel when mouse is over or click event
-        $(".searchBar").click(function(){
-            fadeInNavPanel();
-        });
-
-        //equalize widrh of search bar and list-view panel
-        $( window ).resize(function() {
-            equalizeWidth();
-            //$("#navPanel").height($(window).height());
-        })
-
-       //Click event handler for Search button
-        $("#btnSearch").click(function() {
-            if (APP.Main.txtSearch()!=="") {
-                var text = APP.Main.txtSearch().toString();
-                var searchLoc = ko.observable(new APP.MapLocation({name: text, info: null}));
-                APP.Main.loadLocation(searchLoc);
-                APP.Main.searchBtnClicked = true;
-            }
-        });
-
-        //Call this function to request location access to the user
-        navigator.geolocation.getCurrentPosition(function(){},function(){});
     },
     loadLocation: function(place){
         //load default locations

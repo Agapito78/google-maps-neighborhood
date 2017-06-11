@@ -7,7 +7,7 @@ function equalizeWidth() {
 
 /*
 ////////////////////////////////////////////////////
-MapLocation Class to store location in the list-view
+MapLocation Class to store main locations in the list-view
  */
 APP.MapLocation = function (args){
     this.name =  args.name;
@@ -92,83 +92,83 @@ APP.Main = {
     },
     //Function to adjust opacity of searchBar element
     fadeSearchBar: function (opacity){
-    $(".searchBar").fadeTo( "fast", opacity );
-},
+        $(".searchBar").fadeTo( "fast", opacity );
+    },
 //Function to adjust opacity of searchBar element
-hideNavPanel: function(){
-    $(".navPanel").hide();
-},
+    hideNavPanel: function(){
+        $(".navPanel").hide();
+    },
 //Function to initialize Google Maps
-initMap: function() {
-    console.log("Initialize Map");
-    APP.Main.infowindow = new google.maps.InfoWindow();
-    APP.Main.map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 12,
-        center: APP.Main.defaultPosition(),
-        mapTypeControl: true,
-        mapTypeControlOptions: {
-            style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
-            position: google.maps.ControlPosition.BOTTOM_LEFT
+    initMap: function() {
+        console.log("Initialize Map");
+        APP.Main.infowindow = new google.maps.InfoWindow();
+        APP.Main.map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 12,
+            center: APP.Main.defaultPosition(),
+            mapTypeControl: true,
+            mapTypeControlOptions: {
+                style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+                position: google.maps.ControlPosition.BOTTOM_LEFT
+            }
+        });
+
+        //Close current infoWindow when map is clicked.
+        google.maps.event.addListener(APP.Main.map, 'click', function() {
+            APP.Main.infowindow.close();
+            //Set current market to default color
+            APP.Controller.setDefaultIcon();
+        });
+
+        //Function to fade in opacity of navPanel element
+        function fadeInNavPanel(){
+            APP.Main.fadeNavPanel(0.85);
+            APP.Main.fadeSearchBar(0.85);
         }
-    });
 
-    //Close current infoWindow when map is clicked.
-    google.maps.event.addListener(APP.Main.map, 'click', function() {
-        APP.Main.infowindow.close();
-        //Set current market to default color
-        APP.Controller.setDefaultIcon();
-    });
-
-    //Function to fade in opacity of navPanel element
-    function fadeInNavPanel(){
-        APP.Main.fadeNavPanel(0.85);
-        APP.Main.fadeSearchBar(0.85);
-    }
-
-    //Function to fade in opacity of navPanel element
-    function fadeOutNavPanel(){
-        APP.Main.fadeNavPanel(0);
-        APP.Main.fadeSearchBar(0.2);
-    }
-
-    //Change opacity of navigation panel when map is clicked
-    $("#map").mousedown(function(){
-        fadeOutNavPanel();
-    });
-
-    //Change opacity of navigation panel when mouse is over or click event
-    $(".searchBar").mouseover(function(){
-        APP.Main.map.setZoom(12);
-        APP.Main.clearNearbyPlaces();
-        //APP.Controller.setDefaultIcon();
-        fadeInNavPanel();
-        APP.Main.infowindow.close();
-    });
-
-    //Change opacity of navigation panel when mouse is over or click event
-    $(".searchBar").click(function(){
-        fadeInNavPanel();
-    });
-
-    //equalize widrh of search bar and list-view panel
-    $( window ).resize(function() {
-        equalizeWidth();
-        //$("#navPanel").height($(window).height());
-    })
-
-    //Click event handler for Search button
-    $("#btnSearch").click(function() {
-        if (APP.Main.txtSearch()!=="") {
-            var text = APP.Main.txtSearch().toString();
-            var searchLoc = ko.observable(new APP.MapLocation({name: text, info: null}));
-            APP.Main.loadLocation(searchLoc);
-            APP.Main.searchBtnClicked = true;
+        //Function to fade in opacity of navPanel element
+        function fadeOutNavPanel(){
+            APP.Main.fadeNavPanel(0);
+            APP.Main.fadeSearchBar(0.2);
         }
-    });
 
-    //Call this function to request location access to the user
-    navigator.geolocation.getCurrentPosition(function(){},function(){});
-},
+        //Change opacity of navigation panel when map is clicked
+        $("#map").mousedown(function(){
+            fadeOutNavPanel();
+        });
+
+        //Change opacity of navigation panel when mouse is over or click event
+        $(".searchBar").mouseover(function(){
+            APP.Main.map.setZoom(12);
+            APP.Main.clearNearbyPlaces();
+            //APP.Controller.setDefaultIcon();
+            fadeInNavPanel();
+            APP.Main.infowindow.close();
+        });
+
+        //Change opacity of navigation panel when mouse is over or click event
+        $(".searchBar").click(function(){
+            fadeInNavPanel();
+        });
+
+        //equalize widrh of search bar and list-view panel
+        $( window ).resize(function() {
+            equalizeWidth();
+            //$("#navPanel").height($(window).height());
+        })
+
+        //Click event handler for Search button
+        $("#btnSearch").click(function() {
+            if (APP.Main.txtSearch()!=="") {
+                var text = APP.Main.txtSearch().toString();
+                var searchLoc = ko.observable(new APP.MapLocation({name: text, info: null}));
+                APP.Main.loadLocation(searchLoc);
+                APP.Main.searchBtnClicked = true;
+            }
+        });
+
+        //Call this function to request location access to the user
+        navigator.geolocation.getCurrentPosition(function(){},function(){});
+    },
 
     viewModel: function(strAddress) {
         APP.Main.searchBtnClicked = false;
@@ -176,17 +176,17 @@ initMap: function() {
         APP.Main.defaultPosition({lat: 40.704514, lng: -74.032172});
         APP.Main.nearbyPlaces([]);
         APP.Main.places([
-            ko.observable(new APP.MapLocation({name: "Hoboken, NJ", info: null})),
-            ko.observable(new APP.MapLocation({name: "Statue of Liberty National Monument", info: null})),
-            ko.observable(new APP.MapLocation({name: "Liberty Science Center", info: null})),
-            ko.observable(new APP.MapLocation({name: "Governors Island, NY", info: null})),
-            ko.observable(new APP.MapLocation({name: "Battery Park", info: null})),
-            ko.observable(new APP.MapLocation({name: "Roosevelt Island, NY", info: null})),
-            ko.observable(new APP.MapLocation({name: "Intrepid Sea, Air & Space Museum", info: null})),
-            ko.observable(new APP.MapLocation({name: "Brooklyn Bridge", info: null})),
-            ko.observable(new APP.MapLocation({name: "One World Trade Center", info: null})),
-            ko.observable(new APP.MapLocation({name: "Madison Square Garden", info: null}))
-        ]
+                ko.observable(new APP.MapLocation({name: "Hoboken, NJ", info: null})),
+                ko.observable(new APP.MapLocation({name: "Statue of Liberty National Monument", info: null})),
+                ko.observable(new APP.MapLocation({name: "Liberty Science Center", info: null})),
+                ko.observable(new APP.MapLocation({name: "Governors Island, NY", info: null})),
+                ko.observable(new APP.MapLocation({name: "Battery Park", info: null})),
+                ko.observable(new APP.MapLocation({name: "Roosevelt Island, NY", info: null})),
+                ko.observable(new APP.MapLocation({name: "Intrepid Sea, Air & Space Museum", info: null})),
+                ko.observable(new APP.MapLocation({name: "Brooklyn Bridge", info: null})),
+                ko.observable(new APP.MapLocation({name: "One World Trade Center", info: null})),
+                ko.observable(new APP.MapLocation({name: "Madison Square Garden", info: null}))
+            ]
         );
         APP.Main.ranges([
             ko.observable({name: "500m", value: "500"}),
@@ -225,11 +225,11 @@ initMap: function() {
     },
     loadLocation: function(place){
         //load default locations
-            APP.Controller.getWikipediaInfo(place()).done(function(wikiInfo) {
-                place().info = wikiInfo;
+        APP.Controller.getWikipediaInfo(place()).done(function(wikiInfo) {
+            place().info = wikiInfo;
 
-                APP.Controller.loadLocationData(place);
-            });
+            APP.Controller.loadLocationData(place);
+        });
     }
 
 };

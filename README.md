@@ -7,11 +7,11 @@ When a market is clicked an info window will pop-up and points of interests like
 will be shown around the marker that was clicked. This information helps the user to see what is near the current marker.
 
 
-Link for this project on [GitHub](https://agapito78.github.io/google-maps-neighborhood/public/index.html).
+Link for this project on [GitHub](https://github.com/Agapito78/google-maps-neighborhood).
 
 ### Getting started
 
-Please, check below information to run this project. There is an online version published [here](https://agapito78.github.io/frontend-nanodegree-mobile-portfolio/)
+Please, check below information to run this project. There is an online version published [here](https://agapito78.github.io/google-maps-neighborhood/public/index.html)
 
 #### Part 1: How to run this project
 

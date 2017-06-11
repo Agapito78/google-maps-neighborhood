@@ -196,7 +196,6 @@ APP.Main = {
             ko.observable({name: "ATM", value: "atm"}),
             ko.observable({name: "Liquore Store", value: "liquor_store"}),
             ko.observable({name: "Museum", value: "museum"}),
-            ko.observable({name: "Night Club", value: "night_club"}),
             ko.observable({name: "Car Rental", value: "car_rental"}),
             ko.observable({name: "Convenience", value: "convenience_store"}),
             ko.observable({name: "Stores", value: "store"}),
@@ -204,6 +203,7 @@ APP.Main = {
             ko.observable({name: "Bars", value: "bar"}),
             ko.observable({name: "Restaurants", value: "restaurant"}),
             ko.observable({name: "Parks", value: "park"}),
+            ko.observable({name: "Subway Stations", value: "subway_station"}),
         ]);
     },
     //Function to adjust opacity of searchBar element

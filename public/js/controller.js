@@ -273,35 +273,6 @@ APP.Controller = (function() {
                 clearTimeout(fsRequestTimeOut);
             });
         });
-
-        /*
-        $.ajax({
-            url: fourUrl,
-            data: { action: 'query', list: 'search', srsearch: place.name, format: 'json' },
-            dataType: 'jsonp',
-            success: processResult,
-            fail: function(){
-                showModal("Foursquare Alert!","Sorry! There is an issue connecting to Wikipedia.<br>Please, try again later!");
-                deferred1.resolve(null);
-                clearTimeout(fsRequestTimeOut);
-            }
-        });
-        */
-        function processResult(apiResult){
-            var strFour = "";
-            //console.log(apiResult);
-            return false;
-            var limitArticles = (apiResult.query.search.length>2)?2:apiResult.query.search.length;
-            for (var i = 0; i < limitArticles; i++){
-                //console.log(apiResult.query.search[i]);
-                //var urlFour = "https://foursquare.com/v/" + apiResult.query.search[i].title
-                //strFour += '<li class="list-group-item"><a target="_blank" href="' + urlFour + '">'+apiResult.query.search[i].title+'</a><p>' + apiResult.query.search[i].snippet + '</p></li>';
-
-            }
-            deferred1.resolve(strFour);
-            clearTimeout(fsRequestTimeOut);
-        }
-
         return $.when(deferred1).done(function(){
             return info;
         }).promise();
@@ -314,25 +285,7 @@ APP.Controller = (function() {
         $('#myModal').modal('show');
     }
 
-    function getSuggestions() {
-        var displaySuggestions = function(predictions, status) {
-            if (status != google.maps.places.PlacesServiceStatus.OK) {
-                alert(status);
-                return;
-            }
-
-            predictions.forEach(function(prediction) {
-                var li = document.createElement('li');
-                li.appendChild(document.createTextNode(prediction.description));
-                document.getElementById('suggestions').appendChild(li);
-            });
-        };
-
-        var service = new google.maps.places.AutocompleteService();
-        service.getQueryPredictions({ input: strAddress }, displaySuggestions);
-    }
-
-    //get points of interest aroung specifc location
+    //get points of interest around specifc location
     function getNearbyPlaces(location) {
         console.log("Nearby: " + location.lat() + "," + location.lng());
         var latLng = new google.maps.LatLng(location.lat(), location.lng());
@@ -355,6 +308,8 @@ APP.Controller = (function() {
                         var place = new APP.MapLocation({name: results[i].name, info: "Local Info",marker: results[i].geometry.location});
 
                         createNearbyMarker(results[i], place);
+
+                        //move to the next page
                         if (pagination.hasNextPage) {
                             pagination.nextPage();
                         }
@@ -364,7 +319,7 @@ APP.Controller = (function() {
 
                 //get 20 results
                 loopResults(idx);
-                //get 20 results
+                //get more 20 results
                 loopResults(idx);
             }
         }

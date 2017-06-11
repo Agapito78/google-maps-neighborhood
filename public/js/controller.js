@@ -4,7 +4,6 @@
 APP.Controller = (function() {
     //function to add main markers to the map
     function createMarker(position,place) {
-        //console.log(APP.Main.map);
         var marker = new google.maps.Marker({
             position: position,
             title: place().name,
@@ -62,9 +61,8 @@ APP.Controller = (function() {
         }
     }
 
-    //
+    //create marker for points of interest arounf main markers
     function createNearbyMarker(position,place) {
-        //console.log(APP.Main.map);
         var marker = ko.observable(new google.maps.Marker({
             position: position.geometry.location,
             title: position.name,
@@ -121,6 +119,7 @@ APP.Controller = (function() {
         }
     }
 
+    //get lat/lng from address
     function getPositionFromAddress(place) {
         var deferred1 = $.Deferred();
         var geocoder = new google.maps.Geocoder();
@@ -128,13 +127,10 @@ APP.Controller = (function() {
         geocoder.geocode( { 'address': place().name}, function(results, status) {
 
             if (status == google.maps.GeocoderStatus.OK) {
-                var latitude = results[0].geometry.location.lat;
-                var longitude = results[0].geometry.location.lng;
                 location = results[0].geometry.location;
                 deferred1.resolve(location);
             }
             else {
-                console.log(status);
                 location = null;
                 deferred1.resolve(location);
             }
@@ -154,7 +150,6 @@ APP.Controller = (function() {
 
             if (status == google.maps.GeocoderStatus.OK) {
                 address = results[0].formatted_address.toString();
-                console.log(address);
                 deferred1.resolve(address);
             }
             else {
@@ -180,7 +175,6 @@ APP.Controller = (function() {
     function loadLocationData(place) {
         if (place) {
             getPositionFromAddress(place).done(function (location) {
-                //console.log(location.lat());
                 if (location !== null) {
                     APP.Main.defaultPosition({lat: location.lat(), lng: location.lng()});
                     APP.Controller.createMarker(APP.Main.defaultPosition(), place);

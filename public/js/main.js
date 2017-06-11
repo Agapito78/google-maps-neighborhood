@@ -1,9 +1,6 @@
 /**
  * Created by agapi on 6/1/2017.
  */
-function equalizeWidth() {
-    $( ".navPanel" ).width($( ".searchBar" ).width());
-}
 
 /*
 ////////////////////////////////////////////////////
@@ -48,8 +45,8 @@ APP.MapLocation.prototype.navigateNearbyPlaces =  function() {
     APP.Controller.getNearbyPlaces(this.marker.getPosition());
 };
 
+//hide poins of interest (restaurant, bars, etc) nearby main markers
 APP.MapLocation.prototype.hideDetails =  function() {
-    console.log(this);
     if (this.clearNearbyPlaces) {
         if (this.marker !== null) {
             this.marker.setIcon("https://mt.googleapis.com/vt/icon/name=icons/spotlight/spotlight-poi.png&scale=1");
@@ -281,3 +278,8 @@ APP.Main.places.subscribe(function (changes) {
 
 //Initialize KnockoutJS with default location
 ko.applyBindings(new APP.Main.viewModel("Central Park, NY")); // This makes Knockout get to work
+
+//keep search bar always the same size as nav-bar (list-view)
+function equalizeWidth() {
+    $( ".navPanel" ).width($( ".searchBar" ).width());
+}

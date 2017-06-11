@@ -7,7 +7,7 @@ When a market is clicked an info window will pop-up and points of interests like
 will be shown around the marker that was clicked. This information helps the user to see what is near the current marker.
 
 
-Link for this project on [GitHub](https://github.com/udacity/frontend-nanodegree-mobile-portfolio).
+Link for this project on [GitHub](https://agapito78.github.io/google-maps-neighborhood/public/index.html).
 
 ### Getting started
 
@@ -43,6 +43,10 @@ Functionalities of the Search Bar
 2. There are two options to filter points of interest around the market:
     * By radius: 500m, 1000m or 1500m
     * Choose the type of information: ATM, Stores, Bars, etc.
-    * All search results will be added to the list view
 3. Add new markers using search bar
     * Before clicking Search button, user should select desired radio and point of interest
+    
+&nbsp;
+
+
+

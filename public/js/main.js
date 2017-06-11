@@ -18,6 +18,7 @@ APP.MapLocation.prototype.clearNearbyPlaces = true;
 //display/highlight location in the map (on mouse over in list-view items)
 APP.MapLocation.prototype.displayOnMap =  function() {
     //change current icon color to default
+    console.log("Highlight marker:" + this.marker.getPosition().lat() + "," + this.marker.getPosition().lng());
     APP.Controller.setDefaultIcon();
 
     //change marker color

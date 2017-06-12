@@ -8,7 +8,7 @@ var cleanCSS = require('gulp-clean-css');
 
 var config = {
     bowerDir: 'bower_components'
-}
+};
 
 gulp.task('bootstrap-fonts', function() {
     return gulp.src(config.bowerDir + "/bootstrap/dist/fonts/*")

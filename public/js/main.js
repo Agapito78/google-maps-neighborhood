@@ -10,7 +10,7 @@ APP.MapLocation = function (args){
     this.name =  args.name;
     this.info =  args.info;
     this.marker =  args.marker;
-}
+};
 
 //control variable to confirm if points of interested around main marker must be cleared or not
 APP.MapLocation.prototype.clearNearbyPlaces = true;
@@ -148,7 +148,7 @@ APP.Main = {
         $( window ).resize(function() {
             equalizeWidth();
             //$("#navPanel").height($(window).height());
-        })
+        });
 
         //Click event handler for Search button
         $("#btnSearch").click(function() {
@@ -185,7 +185,7 @@ APP.Main = {
         APP.Main.ranges([
             ko.observable({name: "500m", value: "500"}),
             ko.observable({name: "1000m", value: "1000"}),
-            ko.observable({name: "1500m", value: "1500"}),
+            ko.observable({name: "1500m", value: "1500"})
         ]);
         APP.Main.placesTypes([
             ko.observable({name: "Amusement Park", value: "amusement_park"}),
@@ -199,7 +199,7 @@ APP.Main = {
             ko.observable({name: "Bars", value: "bar"}),
             ko.observable({name: "Restaurants", value: "restaurant"}),
             ko.observable({name: "Parks", value: "park"}),
-            ko.observable({name: "Subway Stations", value: "subway_station"}),
+            ko.observable({name: "Subway Stations", value: "subway_station"})
         ]);
     },
     //Function to adjust opacity of searchBar element

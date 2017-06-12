@@ -48,7 +48,7 @@ APP.Controller = (function() {
                     APP.Controller.setDefaultIcon();
                 });
                 APP.Main.defaultMarker(marker);
-            }
+            };
         })(marker));
         //if search button was clicked than highlight new marker in the map
         if (APP.Main.searchBtnClicked) {
@@ -102,7 +102,7 @@ APP.Controller = (function() {
                 //    APP.Controller.setDefaultIcon();
                 //});
                 //APP.Main.defaultMarker(marker);
-            }
+            };
         })(marker));
         APP.Main.nearbyPlaces.push(marker);
     }
@@ -205,7 +205,7 @@ APP.Controller = (function() {
             var place = ko.observable(new APP.MapLocation({name: address, info: null}));
             APP.Main.defaultPosition({lat: position.coords.latitude, lng: position.coords.longitude});
             APP.Controller.createMarker(APP.Main.defaultPosition(), place);
-            APP.Controller.getNearbyPlaces({lat: function(){return position.coords.latitude}, lng: function(){return position.coords.longitude}});
+            APP.Controller.getNearbyPlaces({lat: function(){return position.coords.latitude;}, lng: function(){return position.coords.longitude;}});
             //APP.Main.places.push(
             //    ko.observable(new APP.MapLocation({name: address, info: null}))
             //);
@@ -301,26 +301,25 @@ APP.Controller = (function() {
         function callback(results, status, pagination) {
             if (status == google.maps.places.PlacesServiceStatus.OK) {
                 var idx = 0;
-
-                function loopResults(index) {
-                    for (var i = index; i < results.length; i++) {
-                        //console.log(results[i]);
-                        var place = new APP.MapLocation({name: results[i].name, info: "Local Info",marker: results[i].geometry.location});
-
-                        createNearbyMarker(results[i], place);
-
-                        //move to the next page
-                        if (pagination.hasNextPage) {
-                            pagination.nextPage();
-                        }
-                    }
-                    idx = index;
-                }
-
                 //get 20 results
                 loopResults(idx);
                 //get more 20 results
                 loopResults(idx);
+            }
+
+            function loopResults(index) {
+                for (var i = index; i < results.length; i++) {
+                    //console.log(results[i]);
+                    var place = new APP.MapLocation({name: results[i].name, info: "Local Info",marker: results[i].geometry.location});
+
+                    createNearbyMarker(results[i], place);
+
+                    //move to the next page
+                    if (pagination.hasNextPage) {
+                        pagination.nextPage();
+                    }
+                }
+                idx = index;
             }
         }
 

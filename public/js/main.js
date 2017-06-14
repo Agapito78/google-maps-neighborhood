@@ -74,7 +74,7 @@ APP.MapLocation.prototype.hideDetails =  function() {
         if (this.marker !== null) {
             this.marker.setIcon("https://mt.googleapis.com/vt/icon/name=icons/spotlight/spotlight-poi.png&scale=1");
         }
-        APP.Main.clearNearbyPlaces();
+        //APP.Main.clearNearbyPlaces();
     }
     this.clearNearbyPlaces = true;
 };

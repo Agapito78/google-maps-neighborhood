@@ -169,11 +169,12 @@ Main Google Maps Block
 }
 
 #locations {
+    overflow: auto;
     position:relative;
-    padding:10px;
     text-align: left;
     position: relative;
-    margin-bottom: 0px;
+    margin: 10px;
+    max-height: 160px;
 }
 
 #locations .list-group {
@@ -184,14 +185,34 @@ Main Google Maps Block
     padding: 2px 5px;
 }
 
+#nearbyLocations {
+    overflow: auto;
+    position:relative;
+    text-align: left;
+    position: relative;
+    margin: 10px;
+    max-height: 160px;
+}
+
+#nearbyLocations .list-group-item {
+    padding: 2px 5px;
+}
+
 #placeType {
     display:block;
     clear:both;
 }
 
-#range {
-    display:inline-block;
+#placeType select{
+    margin:5px;
+    padding:2px;
 }
+
+#range {
+    display:block;
+}
+
+
 
 .rangeItem {
     background-color: #c9cedb;
@@ -241,24 +262,25 @@ Main Google Maps Block
 }
 
 .search-button {
+    display:none;
     padding:3px 0px 3px 0px;
     margin-left: 5px;
     border-radius:3px;
 }
 
-.navPanel {
-    display: none;
+.listPanel {
+    display: block;
     overflow: auto;
     min-width: 300px;
     max-width: 35%;
-    height:65%;
+    height:70%;
     padding:10px;
-    border-radius: 3px;
     background-color: #acacac;
     position: absolute; top: 65px; left: 10px;
     opacity: 0;
     vertical-align: middle;
-    text-align: center
+    text-align: center;
+    z-index:10;
 }
 /* Reduce font-size to avoid scrolling*/
 @media only screen and (max-width: 1049px) {
@@ -267,6 +289,14 @@ Main Google Maps Block
     }
     .list-group-item {
         font-size: 10px;
+    }
+
+    #locations {
+        max-height: 120px;
+    }
+
+    #nearbyLocations {
+        max-height: 120px;
     }
 }
 
@@ -286,6 +316,6 @@ Main Google Maps Block
         font-size: 12px;
     }
     .list-group-item {
-        font-size: 13px;
+        font-size: 12px;
     }
 }

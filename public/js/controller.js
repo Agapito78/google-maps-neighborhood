@@ -9,14 +9,20 @@ APP.Controller = (function() {
             title: place().name,
             map: APP.Main.map
         });
-
+        //console.
+        if (typeof((place().position.lat) == "undefined")) {
+        console.log(place().name + ": lat: \"" + position.lat + "\", lng: \"" + position.lng+ "\"" + (place().position));
+        }
         //update location stored inside APP.Main.places
         place(new APP.MapLocation({name: place().name,info:place().info, marker: marker }));
 
         //add click event to the marker
-        //APP.Main.defaultMarker(marker);
         google.maps.event.addListener(marker, 'click', (function(marker) {
             return function() {
+                if (!(APP.Main.checkedPlaceType())) {
+                    APP.Controller.showModal("Information is Required", "Please, select place type.");
+                    return false;
+                }
                 //when marker is clicked remove old points of interests of the map
                 APP.Main.clearNearbyPlaces();
 
@@ -29,7 +35,7 @@ APP.Controller = (function() {
                 }
 
                 //set content of the infoWindow
-                var content = "<h4>" + place().name + "</h4><div class='small' style='padding:5px'>Nearby markers: <strong>" + APP.Main.checkedPlaceType() + "</strong><br><img width='30' src='https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1122px-Wikipedia-logo-v2.svg.png'> &nbsp;From Wikipedia</div><ul class='list-group'>" + place().info + "</ul>";
+                var content = "<h4>" + place().name + "</h4><div class='small' style='padding:5px'>Nearby markers: <strong>" + APP.Main.checkedPlaceType().value + "</strong><br><img width='30' src='https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1122px-Wikipedia-logo-v2.svg.png'> &nbsp;From Wikipedia</div><ul class='list-group'>" + place().info + "</ul>";
                 APP.Main.infowindow.setContent(content);
 
                 //adjust variable to be used as parameter for getFourSquareInfo
@@ -65,7 +71,7 @@ APP.Controller = (function() {
     function createNearbyMarker(position,place) {
         var marker = ko.observable(new google.maps.Marker({
             position: position.geometry.location,
-            title: position.name,
+            title: position.name + "-" + position.vicinity,
             map: APP.Main.map
         }));
 
@@ -82,7 +88,7 @@ APP.Controller = (function() {
         //click event for points of interest marker
         google.maps.event.addListener(marker(), 'click', (function(marker) {
             return function() {
-                var content = "<h3>" + position.name + "</h3><ul class='list-group'>" + position.vicinity + "</ul>Nearby markers: <strong>" + APP.Main.checkedPlaceType() + "</strong><br>";
+                var content = "<h3>" + position.name + "</h3><ul class='list-group'>" + position.vicinity + "</ul>Nearby markers: <strong>" + APP.Main.checkedPlaceType().value + "</strong><br>";
                 APP.Main.infowindow.setContent(content);
 
                 APP.Main.infowindow.open(APP.Main.map, marker());
@@ -180,7 +186,7 @@ APP.Controller = (function() {
                     APP.Controller.createMarker(APP.Main.defaultPosition(), place);
                 }
                 else {
-                    showModal("Location not Found!", "Please, check the address.");
+                    showModal("Location not Found!", "Please, check the address.\n"+place().name);
                 }
             });
         }
@@ -223,18 +229,14 @@ APP.Controller = (function() {
         var info = "";
 
         var wikiRequestTimeOut = setTimeout(function(){
-            showModal("Wikipedia Timeout!","Please, try again later.");
+            showModal("Wikipedia Alert!","No results were found on Wikipedia!");
         },8000);
 
         $.ajax({
             url: 'https://en.wikipedia.org/w/api.php',
             data: { action: 'query', list: 'search', srsearch: place.name, format: 'json' },
             dataType: 'jsonp',
-            success: processResult,
-            fail: function(){
-                showModal("Wikipedia Alert!","Sorry! There is an issue connecting to Wikipedia.<br>Please, try again later!");
-                deferred1.resolve(null);
-            }
+            success: processResult
         });
 
         function processResult(apiResult){
@@ -292,7 +294,7 @@ APP.Controller = (function() {
         var request = {
             location: latLng,
             radius: APP.Main.checkedRange(),
-            type: [APP.Main.checkedPlaceType()] //inform select value from Place Types Radio Button
+            type: [APP.Main.checkedPlaceType().value] //inform select value from Place Types Radio Button
         };
         infowindow = new google.maps.InfoWindow();
         var service = new google.maps.places.PlacesService(APP.Main.map);
@@ -304,20 +306,19 @@ APP.Controller = (function() {
                 //get 20 results
                 loopResults(idx);
                 //get more 20 results
-                loopResults(idx);
+                //loopResults(idx);
             }
 
             function loopResults(index) {
                 for (var i = index; i < results.length; i++) {
                     //console.log(results[i]);
                     var place = new APP.MapLocation({name: results[i].name, info: "Local Info",marker: results[i].geometry.location});
-
                     createNearbyMarker(results[i], place);
 
                     //move to the next page
-                    if (pagination.hasNextPage) {
-                        pagination.nextPage();
-                    }
+                    //if (pagination.hasNextPage) {
+                    //    pagination.nextPage();
+                    //}
                 }
                 idx = index;
             }
@@ -332,6 +333,7 @@ APP.Controller = (function() {
         getWikipediaInfo: getWikipediaInfo,
         getFourSquareInfo: getFourSquareInfo,
         getNearbyPlaces: getNearbyPlaces,
-        getLocation: getLocation
+        getLocation: getLocation,
+        showModal: showModal
     };
 })();

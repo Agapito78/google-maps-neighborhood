@@ -28,21 +28,18 @@
 
 <!-- Map section-->
 <section class="wrapper">
-    <div id="map"></div>
-    <div class="searchBar">
+    <div id="map" data-bind="event: { 'mousedown': APP.Main.fadeOutNavPanel }"></div>
+    <div id="menu" data-bind="click:APP.Main.fadeInNavPanel,event:{ 'mouseover': APP.Main.fadeInNavPanel }" class="searchBar">
         <div class="input-group inline">
-            <label class="input-group-addon" id="basic-addon3">Add Marker: </label>
-            <input type="text" id="txtSearch" name="txtSearch" data-bind="value: APP.Main.txtSearch" placeholder="" class="form-control" aria-describedby="basic-addon3"/>
+            <label class="input-group-addon" id="basic-addon3">Filter Markers: </label>
+            <input type="text" id="txtSearch" name="txtSearch" data-bind="value: APP.Main.txtSearch,event: { 'keyup': APP.Main.filterMarker },valueUpdate: 'afterkeydown'" placeholder="" class="form-control" aria-describedby="basic-addon3"/>
         </div>
         <div class="search-button">
             <button id="btnSearch" title="Search" class="btn-default glyphicon glyphicon-search"></button>
         </div>
     </div>
-    <div class="navPanel">
+    <div id="navPanel" class="listPanel">
         <div id="options">
-            <div class="currentlocation-button">
-                <button id="btnCurrentLoc" title="Current Location" class="btn-default glyphicon glyphicon-screenshot" onclick="APP.Controller.getLocation()"></button>
-            </div>
             <div id="range" data-bind="foreach: APP.Main.ranges">
                 <div class="rangeItem" >
                     <input type="radio" name="rangeChk"
@@ -50,6 +47,7 @@
                     <label data-bind="text: name"></label>
                 </div>
             </div>
+            <!--
             <div id="placeType" data-bind="foreach: APP.Main.placesTypes">
                 <div class="placeTypeItem" >
                     <input type="radio" name="placeTypeChk"
@@ -57,16 +55,33 @@
                     <label data-bind="text: name"></label>
                 </div>
             </div>
+            -->
+            <div id="placeType" >
+            Place type: <select data-bind="options: APP.Main.placesTypes,
+                       optionsText: 'name',
+                       value: APP.Main.checkedPlaceType,
+                       optionsCaption: 'Choose...'"></select><br>
+            </div>
         </div>
         <div style="overflow: auto">
+            Locations:
             <ul id="locations" class="list-group" data-bind="foreach: APP.Main.places">
-                <li class="list-group-item"  data-bind="click: navigateNearbyPlaces, text: name,event: { mouseover: displayOnMap, mouseout: hideDetails }"></li>
+                <li class="list-group-item"  data-bind="click: navigateNearbyPlaces,text: name,event: { mouseover: displayOnMap, mouseout: hideDetails },visible: visibility"></li>
+            </ul>
+        </div>
+        <label data-bind="text: (APP.Main.currentLocation()&&APP.Main.checkedPlaceType()) ? 'Showing ' + APP.Main.checkedPlaceType().name + ' ' + APP.Main.checkedRange() + 'm near '+ APP.Main.currentLocation().title + '' : 'Choose location above'" ></label>
+        <div>
+            <label data-bind="visible: (APP.Main.nearbyPlaces().length===0),text: APP.Main.nearbyPlaces().length + ' results found'"></label>
+        </div>
+        <div style="overflow: auto">
+            <ul id="nearbyLocations" class="list-group" data-bind="foreach: APP.Main.nearbyPlaces">
+                <li class="list-group-item"  data-bind="text: title"></li>
             </ul>
         </div>
     </div>
 </section>
 
-<script  defer
+<script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8IQIuWNOPXPTPOSXdsMaPzDqeHvUG5Fo&libraries=places&callback=APP.Main.initMap">
 </script>
 

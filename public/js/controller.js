@@ -11,7 +11,7 @@ APP.Controller = (function() {
         });
         //console.
         if (typeof((place().position.lat) == "undefined")) {
-        console.log(place().name + ": lat: \"" + position.lat + "\", lng: \"" + position.lng+ "\"" + (place().position));
+        //console.log(place().name + ": lat: \"" + position.lat + "\", lng: \"" + position.lng+ "\"" + (place().position));
         }
         //update location stored inside APP.Main.places
         place(new APP.MapLocation({name: place().name,info:place().info, marker: marker }));
@@ -19,10 +19,7 @@ APP.Controller = (function() {
         //add click event to the marker
         google.maps.event.addListener(marker, 'click', (function(marker) {
             return function() {
-                if (!(APP.Main.checkedPlaceType())) {
-                    APP.Controller.showModal("Information is Required", "Please, select place type.");
-                    return false;
-                }
+
                 //when marker is clicked remove old points of interests of the map
                 APP.Main.clearNearbyPlaces();
 
@@ -35,7 +32,14 @@ APP.Controller = (function() {
                 }
 
                 //set content of the infoWindow
-                var content = "<h4>" + place().name + "</h4><div class='small' style='padding:5px'>Nearby markers: <strong>" + APP.Main.checkedPlaceType().value + "</strong><br><img width='30' src='https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1122px-Wikipedia-logo-v2.svg.png'> &nbsp;From Wikipedia</div><ul class='list-group'>" + place().info + "</ul>";
+                if ((APP.Main.checkedPlaceType())) {
+                    APP.Controller.getNearbyPlaces(place().marker.getPosition());
+                    var content = "<h6>" + place().name + "</h6><div class='small' style='padding:5px'>Nearby markers: <strong>" + APP.Main.checkedPlaceType().value + "</strong><br><img width='30' src='https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1122px-Wikipedia-logo-v2.svg.png'> &nbsp;From Wikipedia</div><ul class='list-group'>" + place().info + "</ul>";
+                }
+                else {
+                    var content = "<h6>" + place().name + "</h6><div class='small' style='padding:5px'> <img width='30' src='https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1122px-Wikipedia-logo-v2.svg.png'> &nbsp;From Wikipedia</div><ul class='list-group'>" + place().info + "</ul>";
+                }
+
                 APP.Main.infowindow.setContent(content);
 
                 //adjust variable to be used as parameter for getFourSquareInfo
@@ -49,7 +53,7 @@ APP.Controller = (function() {
                 //change Marker color to blue
                 place().marker.setIcon("https://mt.google.com/vt/icon?color=ff004C13&name=icons/spotlight/spotlight-waypoint-blue.png");
                 APP.Main.infowindow.open(APP.Main.map, marker);
-                APP.Controller.getNearbyPlaces(place().marker.getPosition());
+
                 google.maps.event.addListener(APP.Main.infowindow, 'closeclick', function () {
                     APP.Controller.setDefaultIcon();
                 });
@@ -69,6 +73,7 @@ APP.Controller = (function() {
 
     //create marker for points of interest arounf main markers
     function createNearbyMarker(position,place) {
+        var locationInfo = "";
         var marker = ko.observable(new google.maps.Marker({
             position: position.geometry.location,
             title: position.name + "-" + position.vicinity,
@@ -85,32 +90,38 @@ APP.Controller = (function() {
         //set icon
         marker().setIcon(icon);
 
+
+        //Load Foursquare Info
+        getFourSquareInfo(place).done(function(fourInfo) {
+            locationInfo = fourInfo;
+
+            marker().setTitle("<h4>"+(APP.Main.nearbyPlaces().length+1)+") "+position.name + "</h4>" + locationInfo);
+
+            //Load FourSquare Info
+            APP.Controller.getWikipediaInfo(place).done(function(wikiInfo) {
+                locationInfo += "<div class='small' style='padding:5px'><img width='30' src='https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1122px-Wikipedia-logo-v2.svg.png'> &nbsp;Content below from Wikipedia</div>" + wikiInfo;
+
+                marker().setTitle("<h4>"+(APP.Main.nearbyPlaces().length+1)+") "+position.name + "</h4>" + locationInfo);
+
+                APP.Main.nearbyPlaces.push(marker);
+            });
+        });
+
         //click event for points of interest marker
         google.maps.event.addListener(marker(), 'click', (function(marker) {
             return function() {
                 var content = "<h3>" + position.name + "</h3><ul class='list-group'>" + position.vicinity + "</ul>Nearby markers: <strong>" + APP.Main.checkedPlaceType().value + "</strong><br>";
-                APP.Main.infowindow.setContent(content);
+                APP.Main.infowindow.setContent(content + locationInfo);
 
                 APP.Main.infowindow.open(APP.Main.map, marker());
 
-                //Load Foursquare Info
-                getFourSquareInfo(place).done(function(fourInfo) {
-                    content += fourInfo;
-                    APP.Main.infowindow.setContent(content);
 
-                    //Load Wikipedia Info
-                    APP.Controller.getWikipediaInfo(place).done(function(wikiInfo) {
-                        content += "<div class='small' style='padding:5px'><img width='30' src='https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1122px-Wikipedia-logo-v2.svg.png'> &nbsp;Content below from Wikipedia</div>" + wikiInfo;
-                        APP.Main.infowindow.setContent(content);
-                    });
-                });
                 //google.maps.event.addListener(APP.Main.infowindow, 'closeclick', function () {
                 //    APP.Controller.setDefaultIcon();
                 //});
                 //APP.Main.defaultMarker(marker);
             };
         })(marker));
-        APP.Main.nearbyPlaces.push(marker);
     }
 
     function setDefaultIcon() {
@@ -186,7 +197,7 @@ APP.Controller = (function() {
                     APP.Controller.createMarker(APP.Main.defaultPosition(), place);
                 }
                 else {
-                    showModal("Location not Found!", "Please, check the address.\n"+place().name);
+                    APP.Main.showModal("Location not Found!", "Please, check the address.\n"+place().name);
                 }
             });
         }
@@ -198,7 +209,7 @@ APP.Controller = (function() {
             APP.Main.fadeSearchBar(0.2);
             navigator.geolocation.getCurrentPosition(showPosition,geoError);
         } else {
-            showModal("Warning!!!", "Geolocation is not supported by this browser.");
+            APP.Main.showModal("Warning!!!", "Geolocation is not supported by this browser.");
         }
     }
 
@@ -221,7 +232,7 @@ APP.Controller = (function() {
 
     //callback for getLocation function - error handling
     function geoError() {
-        showModal("Warning!!!", "Geocoder failed.");
+        APP.Main.showModal("Warning!!!", "Geocoder failed.");
     }
 
     function getWikipediaInfo(place){
@@ -229,8 +240,10 @@ APP.Controller = (function() {
         var info = "";
 
         var wikiRequestTimeOut = setTimeout(function(){
-            showModal("Wikipedia Alert!","No results were found on Wikipedia!");
+            APP.Main.showModal("Wikipedia Alert!","No results were found on Wikipedia!");
         },8000);
+
+        console.log("Wikipedia search:" + place.name);
 
         $.ajax({
             url: 'https://en.wikipedia.org/w/api.php',
@@ -261,7 +274,7 @@ APP.Controller = (function() {
         var deferred1 = $.Deferred();
         var info = "";
         var fsRequestTimeOut = setTimeout(function(){
-            showModal("FourSquare Alert!","There is no results in Foursquare for this location.");
+            APP.Main.showModal("FourSquare Alert!","There is no results in Foursquare for this location.Check internet connection");
         },8000);
 
         var fourUrl = 'https://api.foursquare.com/v2/venues/search?ll='+place.marker.lat()+","+place.marker.lng() + "&query=" + place.name + "&client_id=P3THLJJCIS2TLMTE0LD1BBTG54S2LGJN30AUH5NSJ1UIO05X&client_secret=CUYYQ0EJNMNLMETTSD4XTYT2WU0NKLOD1SU2IBXADPY5UELL&v=20120609";
@@ -272,24 +285,20 @@ APP.Controller = (function() {
             $.each(data.response.venues, function(i,venues){
                 content = '<div><img style="width:18px" src="images/foursquare-logo-icon-14.png"> View info, photos: <a target="_blank" href="https://foursquare.com/v/' + venues.id + '">' + venues.name + '</a></div>';
                 deferred1.resolve(content);
-                clearTimeout(fsRequestTimeOut);
             });
-        });
+            clearTimeout(fsRequestTimeOut);
+        })
+            .fail(function (jqXHR, textStatus) {
+                APP.Main.showModal("FourSquare Alert!","Foursquare is unavailable at this moment!");
+            });
         return $.when(deferred1).done(function(){
             return info;
         }).promise();
     }
 
-    function showModal(title,content) {
-        $('#myModal').find('.modal-title').text(title);
-        $('#myModal').find('.modal-body').text(content);
-        $('#myModal').find('.modal-footer > .btn-primary').hide();
-        $('#myModal').modal('show');
-    }
-
     //get points of interest around specifc location
     function getNearbyPlaces(location) {
-        console.log("Nearby: " + location.lat() + "," + location.lng());
+        //console.log("Nearby: " + location.lat() + "," + location.lng());
         var latLng = new google.maps.LatLng(location.lat(), location.lng());
         var request = {
             location: latLng,
@@ -334,6 +343,5 @@ APP.Controller = (function() {
         getFourSquareInfo: getFourSquareInfo,
         getNearbyPlaces: getNearbyPlaces,
         getLocation: getLocation,
-        showModal: showModal
     };
 })();

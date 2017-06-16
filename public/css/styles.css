@@ -1,5 +1,28 @@
 /* preloader style start */
 
+.modalCustom {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1050;
+    display: none;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+    outline: 0;
+}
+
+.googleerror {
+    padding-top: 60px;
+    text-align: center;
+}
+
+.glyphicons-alert {
+    color:red;
+    font-size: 50px;
+}
+
 .loader {
     position: fixed;
     z-index: 1200;
@@ -268,8 +291,14 @@ Main Google Maps Block
     border-radius:3px;
 }
 
+.listview {
+    overflow: auto;
+}
+
+
 .listPanel {
     display: block;
+    visibility: hidden;
     overflow: auto;
     min-width: 300px;
     max-width: 35%;

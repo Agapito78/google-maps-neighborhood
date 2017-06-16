@@ -5,19 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-    <script type="text/javascript" src="js/jquery.min.js" defer></script>
-    <script type="text/javascript" src="js/knockout.js" defer></script>
-    <script type="text/javascript" src="js/namespace.js" defer></script>
-    <script type="text/javascript" src="js/data.js" defer></script>
-    <script type="text/javascript" src="js/controller.js" defer></script>
-    <script type="text/javascript" src="js/bootstrap.min.js" defer></script>
-    <script type="text/javascript" src="js/main.js" defer></script>
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/knockout.js" defer></script>
+    <script src="js/namespace.js" defer></script>
+    <script src="js/data.js" defer></script>
+    <script src="js/controller.js" defer></script>
+    <script src="js/main.js" defer></script>
     <title>Title</title>
 </head>
 <body>
 <!-- Preloader-->
 <section class="loader preloader-bg">
-    <div class="loader-inner ">
+    <div class="loader-inner">
         <div id="spinner" class="active">
             <span id="ball_1" class="spinner_ball"></span>
             <span id="ball_2" class="spinner_ball"></span>
@@ -47,15 +46,7 @@
                     <label data-bind="text: name"></label>
                 </div>
             </div>
-            <!--
-            <div id="placeType" data-bind="foreach: APP.Main.placesTypes">
-                <div class="placeTypeItem" >
-                    <input type="radio" name="placeTypeChk"
-                           data-bind="value: value, attr: {id: 'placeTypeChk'}, checked: APP.Main.checkedPlaceType ">
-                    <label data-bind="text: name"></label>
-                </div>
-            </div>
-            -->
+
             <div id="placeType" >
             Place type: <select data-bind="options: APP.Main.placesTypes,
                        optionsText: 'name',
@@ -63,7 +54,7 @@
                        optionsCaption: 'Choose...'"></select><br>
             </div>
         </div>
-        <div style="overflow: auto">
+        <div class="listview">
             Locations:
             <ul id="locations" class="list-group" data-bind="foreach: APP.Main.places">
                 <li class="list-group-item"  data-bind="click: navigateNearbyPlaces,text: name,event: { mouseover: displayOnMap, mouseout: hideDetails },visible: visibility"></li>
@@ -73,38 +64,46 @@
         <div>
             <label data-bind="visible: (APP.Main.nearbyPlaces().length===0),text: APP.Main.nearbyPlaces().length + ' results found'"></label>
         </div>
-        <div style="overflow: auto">
+        <div class="listview">
             <ul id="nearbyLocations" class="list-group" data-bind="foreach: APP.Main.nearbyPlaces">
-                <li class="list-group-item"  data-bind="text: title"></li>
+                <li class="list-group-item"  data-bind="html: title"></li>
             </ul>
         </div>
     </div>
 </section>
 
-<script async defer
+<!-- Just to validate google API -->
+<script>
+    function warning(message) {
+        document.getElementById('map').style.visibility = "hidden";
+        document.getElementsByClassName("wrapper")[0].style.visibility = "hidden";
+        document.getElementsByTagName("body")[0].innerHTML ="<div class='container center-block'><div class='col-lg-12 center-block googleerror'><div class='glyphicon glyphicon-remove-circle glyphicons-alert'></div><h1>" + message + "</h1></div></div>";
+        window.stop();
+    }
+    if (!(navigator.onLine)) {
+        warning('Check your internet connection!');
+    }
+</script>
+<script async defer onerror="warning('NOT POSSIBLE TO LOAD GOOGLE MAPS')"
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8IQIuWNOPXPTPOSXdsMaPzDqeHvUG5Fo&libraries=places&callback=APP.Main.initMap">
+
 </script>
 
-<!-- Modal Bootstrap-->
-<div id="myModal" class="modal fade">
+<!-- Modal Bootstrap using KnockoutJS-->
+<div id="myModaldd" data-bind="style: {display: APP.Main.modal.modalVisible()?'block':'none'}" class="modalCustom" >
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h5 class="modal-title" data-bind="text: APP.Main.modal.headerLabel"></h5>
             </div>
             <div class="modal-body">
-                <p>Modal body text goes here.</p>
+                <p data-bind="text: APP.Main.modal.bodyTemplate"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Save changes</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-bind="click: APP.Main.modal.toogle">OK</button>
             </div>
         </div>
     </div>
 </div>
-
 </body>
 </html>

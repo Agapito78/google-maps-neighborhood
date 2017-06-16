@@ -2,6 +2,41 @@
  * Created by agapi on 6/1/2017.
  */
 
+APP.Modal = function() {
+
+    var self = this;
+
+    var firstTemplateData = {
+        text: 'First template',
+        label: ko.observable('Observable label')
+    };
+
+    var secondTemplateData = {
+        text: 'Second template',
+        simpleLabel: 'Simple text label'
+    };
+
+    self.modalVisible = ko.observable(false);
+
+    self.show = function() {
+        self.modalVisible(true);
+    };
+
+    self.toogle = function() {
+        self.modalVisible(!self.modalVisible());
+    };
+
+    self.headerLabel = ko.observable('Some header text');
+    self.bodyTemplate = ko.observable('firstModalTemplate');
+    self.bodyData = ko.computed(function() {
+        return self.bodyTemplate() === 'firstModalTemplate' ? firstTemplateData : secondTemplateData;
+    });
+
+    self.okText = ko.observable();
+
+    self.modalSize = ko.observable('modal-lg');
+}
+
 var PlaceTypes = function(args) {
     this.name = args.name;
     this.value = args.value;
@@ -45,7 +80,7 @@ APP.MapLocation.prototype.navigateNearbyPlaces =  function() {
     APP.Main.currentLocation(APP.Main.defaultMarker());
     console.log(i);
     if (!(APP.Main.checkedPlaceType())) {
-        APP.Controller.showModal("Information is Required", "Please, select place type.");
+        APP.Main.showModal("Information is Required", "Please, select place type.");
         return false;
     }
     this.clearNearbyPlaces = false;
@@ -58,13 +93,12 @@ APP.MapLocation.prototype.navigateNearbyPlaces =  function() {
     //return false;
     this.marker.setIcon("https://mt.googleapis.com/vt/icon/name=icons/spotlight/spotlight-poi.png&scale=1");
     APP.Main.defaultMarker(this.marker);
-    //APP.Main.map.setZoom(16);
-    //APP.Main.hideNavPanel();
-    //APP.Main.fadeSearchBar(0.2);
+
     this.marker.setIcon("https://mt.google.com/vt/icon?color=ff004C13&name=icons/spotlight/spotlight-waypoint-blue.png");
     APP.Main.defaultMarker(this.marker);
     APP.Main.defaultPosition({lat: this.marker.getPosition().lat(), lng: this.marker.getPosition().lng()});
 
+    //get locations around list item
     APP.Controller.getNearbyPlaces(this.marker.getPosition());
 };
 
@@ -89,6 +123,7 @@ APP.MapLocation.prototype.hideDetails =  function() {
  */
 APP.Main = {
     map:  null,
+    modal:  null,
     searchBtnClicked: false,
     defaultPosition: ko.observable({}), //define the current position
     defaultMarker: ko.observable(null), //define the default marker clicked by the user
@@ -159,6 +194,12 @@ APP.Main = {
 
         });
     },
+    //modal functionality using KnockoutJS
+    showModal: function(title,content) {
+        APP.Main.modal.headerLabel(title);
+        APP.Main.modal.bodyTemplate(content);
+        APP.Main.modal.modalVisible(true);
+    },
     //Function to initialize Google Maps
     initMap: function() {
         console.log("Initialize Map");
@@ -210,6 +251,9 @@ APP.Main = {
     },
 
     viewModel: function(strAddress) {
+
+        APP.Main.modal = new APP.Modal();
+        console.log( APP.Main.modal);
         APP.Main.searchBtnClicked = false;
         APP.Main.txtSearch(strAddress);
         APP.Main.nearbyPlaces =  ko.observableArray([]);
@@ -240,21 +284,10 @@ APP.Main = {
         if (opacity>0) {
             document.getElementById("navPanel").style.visibility = "visible";
             document.getElementById("navPanel").style.opacity = opacity;
-            /*
-            $(".navPanel").fadeTo("fast", opacity, function () {
-                $(this).css("display","block");
-                $(this).css("z-index","99");
-            });
-            */
         }
         else {
             document.getElementById("navPanel").style.opacity = opacity;
-            /*
-            $(".navPanel").fadeTo("fast", opacity, function () {
-                $(this).css("display","none");
-                $(this).css("z-index","0");
-            });
-            */
+            document.getElementById("navPanel").style.visibility = "hidden";
         }
     },
     loadLocation: function(place){

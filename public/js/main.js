@@ -35,7 +35,7 @@ APP.Modal = function() {
     self.okText = ko.observable();
 
     self.modalSize = ko.observable('modal-lg');
-}
+};
 
 var PlaceTypes = function(args) {
     this.name = args.name;
@@ -83,7 +83,7 @@ APP.MapLocation.prototype.navigateNearbyPlaces =  function() {
         APP.Main.showModal("Information is Required", "Please, select place type.");
         return false;
     }
-    this.clearNearbyPlaces = false;
+    this.clearNearbyPlaces = true;
 
     if (i>0) {
         APP.Main.clearNearbyPlaces();

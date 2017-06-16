@@ -11,7 +11,7 @@
     <script src="js/data.js" defer></script>
     <script src="js/controller.js" defer></script>
     <script src="js/main.js" defer></script>
-    <title>Title</title>
+    <title>Google Neighborhood Map</title>
 </head>
 <body>
 <!-- Preloader-->
@@ -54,20 +54,25 @@
                        optionsCaption: 'Choose...'"></select><br>
             </div>
         </div>
-        <div class="listview">
-            Locations:
-            <ul id="locations" class="list-group" data-bind="foreach: APP.Main.places">
-                <li class="list-group-item"  data-bind="click: navigateNearbyPlaces,text: name,event: { mouseover: displayOnMap, mouseout: hideDetails },visible: visibility"></li>
-            </ul>
+        <div id="listBlock" class="listViewBlock">
+            <div class="listview">
+                Locations:
+                <div id="locations" data-bind="foreach: APP.Main.places">
+                    <div class="list-group-item"  data-bind="click: navigateNearbyPlaces,text: name,event: { mouseover: displayOnMap, mouseout: hideDetails },visible: visibility"></div>
+                </div>
+                <label data-bind="text: (APP.Main.currentLocation()&&APP.Main.checkedPlaceType()) ? 'Showing ' + APP.Main.checkedPlaceType().name + ' ' + APP.Main.checkedRange() + 'm near '+ APP.Main.currentLocation().title + '' : 'Choose location above'" ></label>
+            </div>
+
         </div>
-        <label data-bind="text: (APP.Main.currentLocation()&&APP.Main.checkedPlaceType()) ? 'Showing ' + APP.Main.checkedPlaceType().name + ' ' + APP.Main.checkedRange() + 'm near '+ APP.Main.currentLocation().title + '' : 'Choose location above'" ></label>
-        <div>
-            <label data-bind="visible: (APP.Main.nearbyPlaces().length===0),text: APP.Main.nearbyPlaces().length + ' results found'"></label>
-        </div>
-        <div class="listview">
-            <ul id="nearbyLocations" class="list-group" data-bind="foreach: APP.Main.nearbyPlaces">
-                <li class="list-group-item"  data-bind="html: title"></li>
-            </ul>
+        <div id="listBlock2" class="listViewBlock2">
+            <div>
+                <label data-bind="visible: (APP.Main.nearbyPlaces().length===0),text: APP.Main.nearbyPlaces().length + ' results found'"></label>
+            </div>
+            <div class="listview">
+                <div id="nearbyLocations"  data-bind="foreach: APP.Main.nearbyPlaces">
+                    <div class="list-group-item"  data-bind="html: title"></div>
+                </div>
+            </div>
         </div>
     </div>
 </section>

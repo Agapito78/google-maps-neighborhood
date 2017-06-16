@@ -19,7 +19,7 @@ APP.Controller = (function() {
         //add click event to the marker
         google.maps.event.addListener(marker, 'click', (function(marker) {
             return function() {
-
+                var content = "";
                 //when marker is clicked remove old points of interests of the map
                 APP.Main.clearNearbyPlaces();
 
@@ -34,10 +34,10 @@ APP.Controller = (function() {
                 //set content of the infoWindow
                 if ((APP.Main.checkedPlaceType())) {
                     APP.Controller.getNearbyPlaces(place().marker.getPosition());
-                    var content = "<h6>" + place().name + "</h6><div class='small' style='padding:5px'>Nearby markers: <strong>" + APP.Main.checkedPlaceType().value + "</strong><br><img width='30' src='https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1122px-Wikipedia-logo-v2.svg.png'> &nbsp;From Wikipedia</div><ul class='list-group'>" + place().info + "</ul>";
+                    content = "<h6>" + place().name + "</h6><div class='small' style='padding:5px'>Nearby markers: <strong>" + APP.Main.checkedPlaceType().value + "</strong><br><img width='30' src='https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1122px-Wikipedia-logo-v2.svg.png'> &nbsp;From Wikipedia</div><ul class='list-group'>" + place().info + "</ul>";
                 }
                 else {
-                    var content = "<h6>" + place().name + "</h6><div class='small' style='padding:5px'> <img width='30' src='https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1122px-Wikipedia-logo-v2.svg.png'> &nbsp;From Wikipedia</div><ul class='list-group'>" + place().info + "</ul>";
+                    content = "<h6>" + place().name + "</h6><div class='small' style='padding:5px'> <img width='30' src='https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1122px-Wikipedia-logo-v2.svg.png'> &nbsp;From Wikipedia</div><ul class='list-group'>" + place().info + "</ul>";
                 }
 
                 APP.Main.infowindow.setContent(content);
